@@ -7,14 +7,13 @@ import asyncio
 import logging
 import pymysql.cursors
 
+
 url_num_low = 1
-url_num_high = 0
-num_of_urls = 300
 
 async def get_url_list():
+    num_of_urls = 300
     global url_num_low
-    global url_num_high
-    url_num_high += num_of_urls
+    url_num_high = url_num_low + num_of_urls
 
     db = os.environ.get('MYSQL_DATABASE')
     host = os.environ.get('MYSQL_HOST')
@@ -37,7 +36,9 @@ async def get_url_list():
 
             cursor.execute(sql, (str(url_num_low), str(url_num_high)))
             result = cursor.fetchall()
-            url_num_low += num_of_urls
+            
+            url_num_low = url_num_high + 1
+            print(url_num_high, url_num_low)
             
             return result
 

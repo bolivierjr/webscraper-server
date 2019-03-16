@@ -13,11 +13,10 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
                     filename='error.log',
                     datefmt='%d-%b-%y %H:%M:%S')
 
-
 app = Quart(__name__)
 
 
-@app.route('/')
+@app.route('/api/urls')
 async def index():
     try:
         response = await utils.get_url_list()
@@ -29,7 +28,7 @@ async def index():
 
     except Exception as error:
         print(f'ERROR: {error}. Check error.log for tracestack.')
-        sys.exit(1)
+        return jsonify([{'error': 'Oops, having a problem'}]), 500
 
 
 if __name__ == '__main__':
