@@ -36,14 +36,13 @@ async def get_url_list():
 
             cursor.execute(sql, (str(url_num_low), str(url_num_high)))
             result = cursor.fetchall()
-            
             url_num_low = url_num_high + 1
-            print(url_num_high, url_num_low)
-            
+
             return result
 
     except pymysql.err.MySQLError:
         raise
 
     finally:
-        connection.close()
+        if connection:
+            connection.close()

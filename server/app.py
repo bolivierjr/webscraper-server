@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import sys
 import os
+import sys
 import logging
 from utils import utils
 from quart import Quart
 from quart import jsonify
 
 
+timeout = int(os.environ.get('SCRAPE_TIMEOUT', 3))
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
-                    filename='error.log',
+                    filename='master.log',
                     datefmt='%d-%b-%y %H:%M:%S')
 
 app = Quart(__name__)
@@ -22,12 +23,16 @@ async def index():
         response = await utils.get_url_list()
 
         if response:
+            response.append({'timeout': timeout})
             return jsonify(response), 200
+
         else:
-            return jsonify([{'done': True}]), 204
+            return jsonify([{'done': True}]), 200
 
     except Exception as error:
-        print(f'ERROR: {error}. Check error.log for tracestack.')
+        logging.error(f'{error}', exc_info=True)
+        print(f'ERROR: {error}. Check master.log for tracestack.')
+
         return jsonify([{'error': 'Oops, having a problem'}]), 500
 
 

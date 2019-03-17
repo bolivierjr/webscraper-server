@@ -39,14 +39,12 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile.dev
-    links:
-      - "mysqldb:database"
     depends_on:
       - postgresdb
     ports:
       - '5000:5000'
     expose:
-      - 5000
+      - '5000'
     volumes:
       - './server:/app'
     environment:
@@ -55,6 +53,7 @@ services:
       - MYSQL_PORT=${MYSQL_PORT}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - SCRAPE_TIMEOUT=${SCRAPE_TIMEOUT}
     networks:
       - backend
 
