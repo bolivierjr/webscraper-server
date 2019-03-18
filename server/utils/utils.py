@@ -11,9 +11,9 @@ import pymysql.cursors
 url_num_low = 1
 
 async def get_url_list():
-    num_of_urls = 300
+    num_of_urls = 50
     global url_num_low
-    url_num_high = url_num_low + num_of_urls
+    url_num_high = url_num_low + num_of_urls - 1
 
     db = os.environ.get('MYSQL_DATABASE')
     host = os.environ.get('MYSQL_HOST')

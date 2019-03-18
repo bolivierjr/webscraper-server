@@ -2,7 +2,6 @@ version: '3.5'
 services:
   mysqldb:
     image: mysql:5.7
-    hostname: mysqlbase
     container_name: mysql_db
     restart: always
     ports:
@@ -19,7 +18,6 @@ services:
       - backend
 
   postgresdb:
-    hostname: postgresbase
     image: postgres:alpine
     container_name: postgres_db
     restart: always
