@@ -18,6 +18,7 @@ services:
       - backend
 
   postgresdb:
+    # Need to create a table for this db
     image: postgres:alpine
     container_name: postgres_db
     restart: always
@@ -52,6 +53,7 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - SCRAPE_TIMEOUT=${SCRAPE_TIMEOUT}
+      - NUMBER_OF_URLS=${NUMBER_OF_URLS}
     networks:
       - backend
 

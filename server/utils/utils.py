@@ -8,10 +8,11 @@ import logging
 import pymysql.cursors
 
 
+num_of_urls = int(os.environ.get('NUMBER_OF_URLS', 300))
 url_num_low = 1
 
+
 async def get_url_list():
-    num_of_urls = 50
     global url_num_low
     url_num_high = url_num_low + num_of_urls - 1
 

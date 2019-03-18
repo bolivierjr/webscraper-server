@@ -17,8 +17,17 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
 app = Quart(__name__)
 
 
-@app.route('/api/urls')
+@app.route('/status')
 async def index():
+    """
+    This will serve the status page
+    with a server-side jinja template.
+    """
+    pass
+
+
+@app.route('/api/urls')
+async def urls():
     try:
         response = await utils.get_url_list()
 
