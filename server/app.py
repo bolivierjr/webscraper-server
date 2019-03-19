@@ -6,6 +6,7 @@ import sys
 import logging
 from utils import utils
 from quart import Quart
+from quart import request
 from quart import jsonify
 
 
@@ -26,7 +27,12 @@ async def index():
     pass
 
 
-@app.route('/api/urls')
+@app.route('/api/get_ip', methods=['GET'])
+async def ip():
+    return jsonify({'ip': request.access_route[0]}), 200
+
+
+@app.route('/api/urls', methods=['GET'])
 async def urls():
     try:
         response = await utils.get_url_list()
