@@ -14,6 +14,8 @@ services:
       MYSQL_DATABASE: parts
       MYSQL_USER: scraper
       MYSQL_PASSWORD: Hunter2
+    volumes:
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - backend
 
@@ -30,6 +32,8 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - backend
   

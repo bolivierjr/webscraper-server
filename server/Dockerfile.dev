@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD ["python3", "app.py"]
+CMD ["hypercorn", "app:app", "-b", "0.0.0.0"]
