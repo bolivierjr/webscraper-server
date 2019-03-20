@@ -20,16 +20,19 @@ app = Quart(__name__)
 
 @app.route('/status')
 async def index():
-    """
-    This will serve the status page
-    with a server-side jinja template.
-    """
-    pass
+    return jsonify({'status': 'under construction'}), 200
 
 
 @app.route('/api/get_ip', methods=['GET'])
 async def ip():
-    return jsonify({'ip': request.access_route[0]}), 200
+    try:
+        return jsonify({'ip': request.access_route[0]}), 200
+
+    except Exception as error:
+        logging.error(f'{error}', exc_info=True)
+        print(f'ERROR: {error}. Check master.log for tracestack.')
+
+        return jsonify([{'error': 'Oops, having a problem'}]), 500
 
 
 @app.route('/api/urls', methods=['GET'])
