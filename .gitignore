@@ -5,3 +5,4 @@ venv/
 *.pyc
 
 *.log
+app2.py

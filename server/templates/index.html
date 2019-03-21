@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Scraper Progress</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+
+<body>
+  <nav class="navbar is-dark is-mobile">
+    <div class="navbar-brand">
+      <div class="navbar-item has-text-centered">
+        <p>Status</p>
+      </div>
+    </div>
+  </nav>
+
+  <div class="level is-mobile is-vertical">
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">Completed</p>
+        <p class="title">{{progress.completed}}</p>
+      </div>
+    </div>
+    
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">In Progress</p>
+        <p class="title">{{progress.in_progress}}</p>
+      </div>
+    </div>
+    
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">Pending</p>
+        <p class="title">
+          {{progress.urls_total - progress.completed}}
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

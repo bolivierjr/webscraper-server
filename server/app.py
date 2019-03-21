@@ -5,9 +5,7 @@ import os
 import sys
 import logging
 from utils import utils
-from quart import Quart
-from quart import request
-from quart import jsonify
+from quart import Quart, request, jsonify, render_template
 
 
 timeout = int(os.environ.get('SCRAPE_TIMEOUT', 3))
@@ -20,7 +18,16 @@ app = Quart(__name__)
 
 @app.route('/status')
 async def index():
-    return jsonify({'status': 'under construction'}), 200
+    try:
+        progress = await utils.get_progress()
+
+        return jsonify({'hahah': 'fooled you'})
+
+    except Exception as error:
+        logging.error(f'{error}', exc_info=True)
+        print(f'ERROR: {error}. Check master.log for tracestack.')
+
+        return jsonify([{'error': 'Oops, having a problem'}]), 500
 
 
 @app.route('/api/get_ip', methods=['GET'])
@@ -42,6 +49,7 @@ async def urls():
 
         if response:
             response.append({'timeout': timeout})
+
             return jsonify(response), 200
 
         else:

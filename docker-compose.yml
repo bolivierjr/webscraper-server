@@ -36,7 +36,7 @@ services:
       - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - backend
-  
+
   master:
     container_name: masterbase
     build:
@@ -58,6 +58,11 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - SCRAPE_TIMEOUT=${SCRAPE_TIMEOUT}
       - NUMBER_OF_URLS=${NUMBER_OF_URLS}
+        POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     networks:
       - backend
 
