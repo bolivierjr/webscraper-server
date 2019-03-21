@@ -21,7 +21,7 @@ async def index():
     try:
         progress = await utils.get_progress()
 
-        return jsonify({'hahah': 'fooled you'})
+        return await render_template('index.html', progress=progress), 200
 
     except Exception as error:
         logging.error(f'{error}', exc_info=True)

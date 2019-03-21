@@ -6,14 +6,8 @@ import psycopg2
 import pymysql.cursors
 
 
-num_of_urls = os.environ.get('NUMBER_OF_URLS', 300)
+num_of_urls = os.environ.get('NUM_OF_URLS', 300)
 url_num_low = 1
-
-POSTGRES_HOST = os.environ.get('POSTGRES_HOST')
-POSTGRES_PORT = os.environ.get('POSTGRES_PORT')
-POSTGRES_USER = os.environ.get('POSTGRES_USER')
-POSTGRES_PASSWORD = os.environ.get('POSTGRES_PASSWORD')
-POSTGRES_DB = os.environ.get('POSTGRES_DB')
 
 MYSQL_DATABASE = os.environ.get('MYSQL_DATABASE')
 MYSQL_HOST = os.environ.get('MYSQL_HOST')
@@ -22,17 +16,17 @@ MYSQL_USER = os.environ.get('MYSQL_USER')
 MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD')
 
 psql_info = {
-    'user': POSTGRES_USER,
-    'password': POSTGRES_PASSWORD,
-    'host': POSTGRES_HOST,
-    'port': POSTGRES_PORT,
-    'database': POSTGRES_DB,
+    'user': os.environ.get('POSTGRES_USER'),
+    'password': os.environ.get('POSTGRES_PASSWORD'),
+    'host': os.environ.get('POSTGRES_HOST'),
+    'port': os.environ.get('POSTGRES_PORT'),
+    'database': os.environ.get('POSTGRES_DB')
 }
 
 
 async def get_url_list():
     global url_num_low
-    url_num_high = url_num_low + num_of_urls - 1
+    url_num_high = url_num_low + int(num_of_urls) - 1
 
     connection = pymysql.connect(host=MYSQL_HOST,
                                  user=MYSQL_USER,
