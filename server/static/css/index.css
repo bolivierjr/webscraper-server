@@ -1,9 +1,11 @@
 .level {
   padding: 20px;
-  background-color: tan;
+  background-color: #EBFAE0;
+  opacity: 0.8;
 }
 
 .navbar {
   font-size: 20px;
   padding: 5px;
+  background-color: #9BD274;
 }

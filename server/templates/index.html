@@ -4,13 +4,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Scraper Progress</title>
+  <title>Scraper</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 
 <body>
-  <nav class="navbar is-dark is-mobile">
+  <nav class="navbar is-mobile">
     <div class="navbar-brand">
       <div class="navbar-item has-text-centered">
         <p>Status</p>
@@ -18,26 +19,68 @@
     </div>
   </nav>
 
-  <div class="level is-mobile is-vertical">
+  <div class="level is-mobile">
     <div class="level-item has-text-centered">
       <div>
         <p class="heading">Completed</p>
-        <p class="title">{{progress.completed}}</p>
+        <p class="title">{{progress.completed_total}}</p>
       </div>
     </div>
     
     <div class="level-item has-text-centered">
       <div>
-        <p class="heading">In Progress</p>
+        <p class="heading">Re-Scrape Queue</p>
         <p class="title">{{progress.in_progress}}</p>
       </div>
     </div>
     
     <div class="level-item has-text-centered">
       <div>
-        <p class="heading">Pending</p>
+        <p class="heading">Pages Left</p>
         <p class="title">
-          {{progress.urls_total - progress.completed}}
+          {{progress.total_left}}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <nav class="navbar is-mobile">
+    <div class="navbar-brand">
+      <div class="navbar-item has-text-centered">
+        <p>Completed - Per Day</p>
+      </div>
+    </div>
+  </nav>
+
+  <div class="level is-mobile">
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">Today</p>
+        <p class="title">{{progress.today_complete}}</p>
+      </div>
+    </div>
+    
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">Yesterday</p>
+        <p class="title">{{progress.day_two_complete}}</p>
+      </div>
+    </div>
+    
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">2 Days Ago</p>
+        <p class="title">
+          {{progress.day_three_complete}}
+        </p>
+      </div>
+    </div>
+
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">3 Days Ago</p>
+        <p class="title">
+          {{progress.day_four_complete}}
         </p>
       </div>
     </div>

@@ -4,6 +4,7 @@ import asyncio
 import logging
 import psycopg2
 import pymysql.cursors
+from datetime import datetime, timedelta
 
 
 num_of_urls = os.environ.get('NUM_OF_URLS', 300)
@@ -51,6 +52,16 @@ async def get_url_list():
 
 
 async def get_progress():
+    connection = pymysql.connect(host=MYSQL_HOST,
+                                 user=MYSQL_USER,
+                                 password=MYSQL_PASSWORD,
+                                 db=MYSQL_DATABASE,
+                                 charset='utf8mb4')
+
+    # For url list database
+    select_urls_total = '''SELECT COUNT(*) FROM `crawler_parts`'''
+
+    # The rest are for postgres
     select_completed = '''SELECT COUNT(*) FROM parts_data
                        WHERE completed_time IS NOT NULL;'''
 
@@ -58,32 +69,63 @@ async def get_progress():
                        WHERE completed_time IS NULL
                        AND issued_time is NOT NULL;'''
 
-    # For url list database
-    select_urls_total = '''SELECT COUNT(*) FROM `crawler_parts`'''
+    select_days = '''SELECT COUNT(*) FROM parts_data
+                  WHERE completed_time BETWEEN %s and %s'''
 
-    connection = pymysql.connect(host=MYSQL_HOST,
-                                 user=MYSQL_USER,
-                                 password=MYSQL_PASSWORD,
-                                 db=MYSQL_DATABASE,
-                                 charset='utf8mb4')
+    today = datetime.now().date()
+    day_two = today - timedelta(days=1)
+    day_three = today - timedelta(days=2)
+    day_four = today - timedelta(days=3)
+    start = '00:00:00.000000'
+    end = '23:59:59.999999'
 
     try:
         with connection.cursor() as cursor:
             cursor.execute(select_urls_total)
-            urls_total = cursor.fetchone()
+            urls_total = cursor.fetchone()[0]
 
         with psycopg2.connect(**psql_info) as conn:
             with conn.cursor() as cursor:
                 cursor.execute(select_completed)
-                completed = cursor.fetchone()
+                completed_total = cursor.fetchone()[0]
 
                 cursor.execute(select_in_progress)
-                in_progress = cursor.fetchone()
+                in_progress = cursor.fetchone()[0]
 
+                cursor.execute(
+                    select_days,
+                    [f'{today} {start}', f'{today} {end}']
+                )
+                today_complete = cursor.fetchone()[0]
+
+                cursor.execute(
+                    select_days,
+                    [f'{day_two} {start}', f'{day_two} {end}']
+                )
+                day_two_complete = cursor.fetchone()[0]
+
+                cursor.execute(
+                    select_days,
+                    [f'{day_three} {start}', f'{day_three} {end}']
+                )
+                day_three_complete = cursor.fetchone()[0]
+
+                cursor.execute(
+                    select_days,
+                    [f'{day_four} {start}', f'{day_four} {end}']
+                )
+                day_four_complete = cursor.fetchone()[0]
+
+        # Using the f-strings {:,} to put a comma every 1000s
         return {
-            'completed': completed[0],
-            'in_progress': in_progress[0],
-            'urls_total': urls_total[0]
+            'completed_total': f'{completed_total:,}',
+            'in_progress': f'{in_progress:,}',
+            'urls_total': f'{urls_total:,}',
+            'total_left': f'{(urls_total - completed_total):,}',
+            'today_complete': f'{today_complete:,}',
+            'day_two_complete': f'{day_two_complete:,}',
+            'day_three_complete': f'{day_three_complete:,}',
+            'day_four_complete': f'{day_four_complete:,}'
         }
 
     except (pymysql.err.MySQLError, Exception):
